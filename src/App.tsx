@@ -3,7 +3,7 @@ import './App.css';
 import { User } from './types';
 import Form from './components/Form';
 import UsersList from './components/UsersList';
-import { fetchUsers, LogIn } from './services/usersService';
+import { fetchUsers, LogIn, UPdate } from './services/usersService';
 import Login from './components/Login';
 
 interface AppState {
@@ -31,7 +31,7 @@ function App() {
         newUserName: '',
     });
 
-    const divRef = useRef<HTMLDivElement>(null); // Mantenemos el useRef como ejemplo
+    const divRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const loadUsers = async () => {
@@ -73,7 +73,6 @@ function App() {
         setUiState((prev) => {
             const newMode = !prev.isDarkMode;
 
-            // Ejemplo de uso de useRef para cambiar estilos directamente
             if (divRef.current) {
                 divRef.current.style.backgroundColor = newMode ? '#333333' : '#ffffff';
                 divRef.current.style.color = newMode ? '#ffffff' : '#000000';
@@ -95,9 +94,23 @@ function App() {
         }
     };
 
+    const handleUserUpdate = async (updatedUser: User) => {
+        try {
+            const user = await UPdate(updatedUser.name, updatedUser.email, updatedUser.age, updatedUser._id);
+            console.log('User Updated:', user);
+            setUsers((prevUsers) =>
+                prevUsers.map((user) =>
+                    user._id === user._id ? user : user
+                )
+            );
+        } catch (error) {
+            console.error('Update failed:', error);
+            alert('Update Failed, check the data.');
+        }
+    };
+
     return (
         <div className="App" ref={divRef}>
-            {/* Notification Popup */}
             {uiState.showNotification && (
                 <div className={`notification ${uiState.isDarkMode ? 'dark' : 'light'}`}>
                     User <strong>{uiState.newUserName}</strong> has been created successfully!
@@ -116,7 +129,7 @@ function App() {
                 ) : (
                     <>
                         <h2>Bienvenido, {currentUser?.name}!</h2>
-                        <UsersList users={users} />
+                        <UsersList users={users} onUserUpdated={handleUserUpdate} />
                         <p>New users: {newUsersNumber}</p>
                         <Form onNewUser={handleNewUser} />
                     </>

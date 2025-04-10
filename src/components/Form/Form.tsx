@@ -12,7 +12,8 @@ const INITIAL_STATE: User = {
     age: 0,
     email: '',
     password: '',
-    phone: 0
+    phone: 0,
+    _id:''
 };
 
 type FormReducerAction =

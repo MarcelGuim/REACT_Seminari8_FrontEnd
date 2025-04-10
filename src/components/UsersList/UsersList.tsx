@@ -1,28 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { User } from '../../types';
-import styles from './UsersList.module.css'; // Import CSS module
+import styles from './UsersList.module.css';
+import Update from '../Update/Update';
 
 interface Props {
     users: User[];
+    onUserUpdated: (user: User) => void; // ✅ Rep un usuari
 }
 
-const UsersList: React.FC<Props> = ({ users }) => {
+const UsersList: React.FC<Props> = ({ users, onUserUpdated }) => {
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+    const handleUpdateComplete = (updatedUser: User) => {
+        setSelectedUser(null);
+        onUserUpdated(updatedUser); // ✅ Cridem amb l'usuari actualitzat
+    };
+
     const renderList = (): React.ReactNode[] => {
         return users.map((user) => (
-            <li key={user.name} className={styles.listItem}>
+            <li 
+                key={user._id}
+                className={styles.listItem}
+                onClick={() => setSelectedUser(user)}
+            >
                 <div className={styles.userInfo}>
                     <h2 className={styles.user}>{user.name}</h2>
                     <h3 className={styles.age}>Age: {user.age}</h3>
-                    <p className={styles.email}>{user.email}</p>
+                    {user.email && <p className={styles.email}>{user.email}</p>}
+                    <p className={styles._id}>ID: {user._id}</p>
                 </div>
             </li>
         ));
     };
 
     return (
-        <ul className={styles.list}>
-            {renderList()}
-        </ul>
+        <div className={styles.container}>
+            <ul className={styles.list}>
+                {renderList()}
+            </ul>
+            
+            {selectedUser && (
+                <div className={styles.updateModal}>
+                    <Update 
+                        user={selectedUser} 
+                        onUpdate={handleUpdateComplete} 
+                    />
+                </div>
+            )}
+        </div>
     );
 };
 
