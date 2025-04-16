@@ -5,7 +5,7 @@ import Update from '../Update/Update';
 
 interface Props {
     users: User[];
-    onUserUpdated: (user: User) => void; // ✅ Rep un usuari
+    onUserUpdated: (user: User) => void;
 }
 
 const UsersList: React.FC<Props> = ({ users, onUserUpdated }) => {
@@ -13,7 +13,7 @@ const UsersList: React.FC<Props> = ({ users, onUserUpdated }) => {
 
     const handleUpdateComplete = (updatedUser: User) => {
         setSelectedUser(null);
-        onUserUpdated(updatedUser); // ✅ Cridem amb l'usuari actualitzat
+        onUserUpdated(updatedUser);
     };
 
     const renderList = (): React.ReactNode[] => {

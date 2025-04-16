@@ -10,7 +10,7 @@ interface User {
 
 interface UpdateProps {
     user: User;
-    onUpdate: (updatedUser: User) => void; // ✅ passem tot el User
+    onUpdate: (updatedUser: User) => void;
 }
 
 const Update: React.FC<UpdateProps> = ({ user, onUpdate }) => {
@@ -34,13 +34,13 @@ const Update: React.FC<UpdateProps> = ({ user, onUpdate }) => {
         }
 
         const updatedUser: User = {
-            _id: user._id, // ✅ mantenim el mateix ID
+            _id: user._id,
             name,
             age: ageNumber,
             email,
         };
 
-        onUpdate(updatedUser); // ✅ passem l'usuari complet
+        onUpdate(updatedUser);
     };
 
     return (

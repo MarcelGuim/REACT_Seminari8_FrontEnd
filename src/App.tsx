@@ -98,11 +98,9 @@ function App() {
         try {
             const user = await UPdate(updatedUser.name, updatedUser.email, updatedUser.age, updatedUser._id);
             console.log('User Updated:', user);
-            setUsers((prevUsers) =>
-                prevUsers.map((user) =>
-                    user._id === user._id ? user : user
-                )
-            );
+            const fetchedUsers = await fetchUsers();
+            setUsers(fetchedUsers);
+
         } catch (error) {
             console.error('Update failed:', error);
             alert('Update Failed, check the data.');

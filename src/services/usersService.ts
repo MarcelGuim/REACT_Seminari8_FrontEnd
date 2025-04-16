@@ -51,7 +51,7 @@ export const UPdate = async (name: string, email: string, age:number, id:string)
         if (response.status !== 200) {
             throw new Error('Failed to update in');
         }
-        return response.data; // Devuelve los datos del usuario
+        return response.data;
     } catch (error) {
         console.error('Error updating in:', error);
         throw error;
